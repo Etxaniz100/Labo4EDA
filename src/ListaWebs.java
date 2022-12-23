@@ -322,25 +322,39 @@ public class ListaWebs
         }
         return listaReturn;
     }
-    public ArrayList<String> web2Words2(String pWeb)
+    public String[] web2Words2(String pWeb, Web laWeb)
     {
-        Web laWeb = buscarWebPorString(pWeb);
         ArrayList<String> listaReturn = new ArrayList<String>();
         if (laWeb!=null)
         {
             Integer length = ListaPalabras.getMiListaPalabras().getLength();
             Integer cont = 0;
             String palabra;
-            while (cont < length){
+            char car = ' ';
+            boolean bool = true;
+            while (cont < length)
+            {
                 palabra = ListaPalabras.getMiListaPalabras().obtenerPalabra(cont);
-                if (laWeb.getNombre().contains(palabra)){
-                    listaReturn.add(palabra);
+                if (palabra != null && palabra != "")
+                {
+                    if (palabra.charAt(0) != car)
+                    {
+                        car = palabra.charAt(0);
+                        bool = pWeb.indexOf(car) != -1;
+                    }
+                    else if (bool)
+                    {
+                        if (laWeb.getNombre().contains(palabra)) {
+                            listaReturn.add(palabra);
+                        }
+                    }
                 }
                 cont ++;
             }
         }
-
-        return listaReturn;
+        String[] ret = new String[listaReturn.size()];
+        ret = listaReturn.toArray(ret);
+        return ret;
     }
     public void borrarLista()
     {

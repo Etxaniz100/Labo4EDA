@@ -1,11 +1,13 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 public class ListaPalabras
 {
     // ------ Atributos ------
     private static ListaPalabras miListaPalabras;
     private ArrayList<String> listaPalabras;
+    private HashMap<Integer, Character> posCaracteres;
     // ------ Constructora ------
     private ListaPalabras()
     {
@@ -20,6 +22,28 @@ public class ListaPalabras
             miListaPalabras = new ListaPalabras();
         }
         return miListaPalabras;
+    }
+    public void crearHashMap()
+    {
+        posCaracteres = new HashMap<>();
+        Integer cont = 0;
+        Character car = listaPalabras.get(0).charAt(0);
+        posCaracteres.put(cont, car);
+        while (cont < listaPalabras.size())
+        {
+            String palabra = listaPalabras.get(cont);
+            if (palabra != null && palabra != "" && car != palabra.charAt(0))
+            {
+                System.out.println(car);
+                car = palabra.charAt(0);
+                posCaracteres.put(cont, car);
+            }
+            cont ++;
+        }
+    }
+    public HashMap<Integer, Character> getHashMap()
+    {
+        return posCaracteres;
     }
     public void ordenarPalabras()
     {

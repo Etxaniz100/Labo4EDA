@@ -31,6 +31,13 @@ public class main {
         Path path = Paths.get("");
         main.getMiMain().cargarListaPalabras(path.toAbsolutePath().toString() + "\\words.txt");
         System.out.println("Tiempo para cargar las palabras: " + reloj.elapsedTime());
+        System.out.println(ListaPalabras.getMiListaPalabras().getHashMap().get(1));
+        System.out.println(ListaPalabras.getMiListaPalabras().getHashMap().get(2));
+        System.out.println(ListaPalabras.getMiListaPalabras().getHashMap().get(3));
+        System.out.println(ListaPalabras.getMiListaPalabras().getHashMap().get(4));
+        System.out.println(ListaPalabras.getMiListaPalabras().getHashMap().get(8));
+        System.out.println(ListaPalabras.getMiListaPalabras().getHashMap().get(10));
+
         main.getMiMain().cargarListaIndex(path.toAbsolutePath().toString() + "\\listaPeque");
         System.out.println("Tiempo para cargar las webs: " + reloj.elapsedTime());
         main.getMiMain().cargarListaRelaciones(path.toAbsolutePath().toString() + "\\relacionesPeque");
@@ -88,7 +95,11 @@ public class main {
             while (entrada.hasNext()) {
                 linea = entrada.nextLine();
                 String datos[] = linea.split(":+"); // el split para dividir los datos
-                ListaWebs.getMiListaWebs().insertarWeb(new Web(datos[1], Integer.valueOf(datos[0]), ListaWebs.getMiListaWebs().web2Words(datos[1]))); //Creamos la web con los dos datos leidos
+                String unDato = datos[0];
+                String dosDato = datos[1];
+                Integer unInt = Integer.valueOf(unDato);
+                Web unaWeb = new Web(dosDato, unInt);
+                ListaWebs.getMiListaWebs().insertarWeb(new Web(dosDato, unInt, ListaWebs.getMiListaWebs().web2Words2(dosDato, unaWeb))); //Creamos la web con los dos datos leidos
             }
             entrada.close();
         } catch (IOException e) {
@@ -122,6 +133,7 @@ public class main {
         catch(IOException e) {
             e.printStackTrace();
         }
+        ListaPalabras.getMiListaPalabras().crearHashMap();
         System.out.println("Lista palabras cargada");
     }
     public void cargarListaRelaciones(String nomF) {
