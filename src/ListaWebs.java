@@ -87,7 +87,7 @@ public class ListaWebs
     }
     */
 
-    /*
+
     public Web buscarWebPorString(String pNombre)
     {
         // hay que encontrar el Id del nombre de esa web, para eso hay que buscarla en la lista.
@@ -104,9 +104,9 @@ public class ListaWebs
             return buscarWebPorNombre(lista, 0, lista.size(), pNombre, 0);
         }
     }
-    */
 
-    /*
+
+
     public Web buscarWebPorNombre(ArrayList<Web> lista, Integer inicio, Integer fin, String nombre, Integer caracter)
     {
         //System.out.println("Inicio");
@@ -243,8 +243,6 @@ public class ListaWebs
         }
         return devolver;
     }
-    */
-
     /*
     public Integer string2Id(String pNombre)
     {
@@ -304,26 +302,46 @@ public class ListaWebs
         }
         return listaReturn;
     }
-    //
-    //public ArrayList<String> web2Words(String pWeb)
-    //{
-        //Web laWeb = buscarWebPorString(pWeb);
-        //ArrayList<String> listaReturn = new ArrayList<String>();
-        //Integer length = ListaPalabras.getMiListaPalabras().getLength();
-        //Integer cont = 0;
-        //String palabra;
-        //while (cont < length){
-        //    palabra = ListaPalabras.getMiListaPalabras().obtenerPalabra(cont);
-        //    if (laWeb.getNombre().contains(palabra)){
-        //        listaReturn.add(palabra);
-        //    }
-        //    cont ++;
-        //}
-        //return listaReturn;
-    //}
-    *\
+    */
+    public ArrayList<String> web2Words(String pWeb)
+    {
+        Web laWeb = buscarWebPorString(pWeb);
+        ArrayList<String> listaReturn = new ArrayList<String>();
+        if (laWeb!=null)
+        {
+            Integer length = ListaPalabras.getMiListaPalabras().getLength();
+            Integer cont = 0;
+            String palabra;
+            while (cont < length){
+                palabra = ListaPalabras.getMiListaPalabras().obtenerPalabra(cont);
+                if (laWeb.getNombre().contains(palabra)){
+                    listaReturn.add(palabra);
+                }
+                cont ++;
+            }
+        }
+        return listaReturn;
+    }
+    public ArrayList<String> web2Words2(String pWeb)
+    {
+        Web laWeb = buscarWebPorString(pWeb);
+        ArrayList<String> listaReturn = new ArrayList<String>();
+        if (laWeb!=null)
+        {
+            Integer length = ListaPalabras.getMiListaPalabras().getLength();
+            Integer cont = 0;
+            String palabra;
+            while (cont < length){
+                palabra = ListaPalabras.getMiListaPalabras().obtenerPalabra(cont);
+                if (laWeb.getNombre().contains(palabra)){
+                    listaReturn.add(palabra);
+                }
+                cont ++;
+            }
+        }
 
-     */
+        return listaReturn;
+    }
     public void borrarLista()
     {
         lista = new ArrayList<Web>();

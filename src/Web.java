@@ -8,6 +8,7 @@ public class Web
     private String nombre;
     private Integer id;
     private ArrayList<Web> listaRelaciones;
+    private String[] palabras;
 
     // la constructora que usaremos en la mayoría de los casos
     public Web(String pNombre, Integer pId)
@@ -17,11 +18,11 @@ public class Web
     }
     // esta constructora se usaría en caso de que tendríamos todos los datos de entrada, pero como por lo general tendremos
     // solo el id y el nombre cuando creemos el objeto web, no la utilizaremos.
-    public Web(String pNombre, Integer pId, ArrayList<Web> pLista)
+    public Web(String pNombre, Integer pId, String[] pLista)
     {
         this.id = pId;
         this.nombre = pNombre;
-        this.listaRelaciones = pLista;
+        this.palabras = pLista;
     }
     public Integer getId()
     {

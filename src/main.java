@@ -29,54 +29,46 @@ public class main {
 
 
         Path path = Paths.get("");
-        main.getMiMain().cargarListaIndex(path.toAbsolutePath().toString() + "\\nombres1000000.txt");
+        main.getMiMain().cargarListaPalabras(path.toAbsolutePath().toString() + "\\words.txt");
+        System.out.println("Tiempo para cargar las palabras: " + reloj.elapsedTime());
+        main.getMiMain().cargarListaIndex(path.toAbsolutePath().toString() + "\\listaPeque");
         System.out.println("Tiempo para cargar las webs: " + reloj.elapsedTime());
-        main.getMiMain().cargarListaRelaciones(path.toAbsolutePath().toString() + "\\relaciones1000000.txt");
+        main.getMiMain().cargarListaRelaciones(path.toAbsolutePath().toString() + "\\relacionesPeque");
         System.out.println("Tiempo para cargar las relaciones: " + reloj.elapsedTime());
-
 
         Graph grafo = new Graph(ListaWebs.getMiListaWebs().getLista().size());
         grafo.crearGrafo(ListaWebs.getMiListaWebs());
         System.out.println("Tiempo para crear el grafo: " + reloj.elapsedTime());
-        //grafo.print();
 
-        System.out.println("Tiempo pre casos de prueba: " + reloj.elapsedTime());
 
-        System.out.println("Dos elementos que" +
-                " estan en la lista");
-        System.out.println(grafo.estanConectados2("72903 ---> 35852 ### 52144 ### 509650 ### 10260 ### 526812 ### 841261 ### 432145 ### 456128 ### 596284 ###",
-                                                    "999999 ---> 315164 ### 220343 ### 768634 ### 936698 ### 385456 ### ").toString());
-        System.out.println();
-        System.out.println("Tiempo post casos de prueba: " + reloj.elapsedTime());
-/*
+        System.out.println("Caso de prueba web2Words");
+        System.out.println(ListaWebs.getMiListaWebs().web2Words("devalt.org"));
+        System.out.println(ListaWebs.getMiListaWebs().web2Words("campofrio.es"));
+        System.out.println(ListaWebs.getMiListaWebs().web2Words("alphadatainternational.com"));
+        System.out.println(ListaWebs.getMiListaWebs().web2Words("business-english-dresden.de"));
 
-        System.out.println("Un elemento que no esta en la lista");
-        System.out.println(grafo.estanConectados2("0-00.pl", "0 ---> 2 ### 4 ### 7 ### 10").toString());
-        System.out.println();
 
-        System.out.println("Los dos elementos estan en la lista");
-        System.out.println(grafo.estanConectados2("10 ---> 0 ### 9", "0 ---> 2 ### 4 ### 7 ### 10").toString());
-        System.out.println();
+        /*
+        grafo.print();
 
-        System.out.println("Los dos elementos estan en la lista 2");
-        System.out.println(grafo.estanConectados2("4 ---> 0 ### 3", "3 ---> 4 ### 5").toString());
-        System.out.println();
-
-        System.out.println("Los dos elementos estan en la lista 3");
-        System.out.println(grafo.estanConectados2("9 ---> 10", "0 ---> 2 ### 4 ### 7 ### 10").toString());
-        System.out.println();
-        // este bucle comprueba absolutamente todos los casos posibles
-        for(int i =0; i<11; i++)
-        {
-
-            for (int j =0; j<11; j++)
-            {
-                System.out.println("Elemento: " + i + " y elemento: " + j);
-                System.out.println(grafo.estanConectados2(ListaWebs.getMiListaWebs().getLista().get(i).getNombre(), ListaWebs.getMiListaWebs().getLista().get(j).getNombre()).toString());
-            }
-        }
         System.out.println("Tiempo para los casos de prueba: " + reloj.elapsedTime());
-        */
+        System.out.println("Caso 1-> El mismo elemento");
+        System.out.println(grafo.estanConectados2(ListaWebs.getMiListaWebs().getLista().get(0).getNombre(),ListaWebs.getMiListaWebs().getLista().get(0).getNombre()).toString());
+        System.out.println("Caso 2-> Dos elementos directamente conectados");
+        System.out.println(grafo.estanConectados2(ListaWebs.getMiListaWebs().getLista().get(3).getNombre(),ListaWebs.getMiListaWebs().getLista().get(398861).getNombre()).toString());
+        System.out.println("Caso 2.1-> Dos elementos conectados mediante otro elemento de por medio");
+        System.out.println(grafo.estanConectados2(ListaWebs.getMiListaWebs().getLista().get(3).getNombre(),ListaWebs.getMiListaWebs().getLista().get(115696).getNombre()).toString());
+        System.out.println("Caso 2.2-> Dos elementos conectados mediante dos elementos de por medio");
+        System.out.println(grafo.estanConectados2(ListaWebs.getMiListaWebs().getLista().get(3).getNombre(),ListaWebs.getMiListaWebs().getLista().get(115515).getNombre()).toString());
+        System.out.println("Caso 3-> Dos elementos no estan conectados");
+        System.out.println(grafo.estanConectados2(ListaWebs.getMiListaWebs().getLista().get(845).getNombre(),ListaWebs.getMiListaWebs().getLista().get(92355).getNombre()).toString());
+        System.out.println("Caso 3.1-> Un elemento no esta en la lista");
+        System.out.println(grafo.estanConectados2(ListaWebs.getMiListaWebs().getLista().get(1224).getNombre(),"webquenoestaenlalista"));
+        System.out.println("Caso 3.2-> Ningun elemento esta en la lista");
+        System.out.println(grafo.estanConectados2("webquenoestaenlalista1","webquenoestaenlalista2"));;
+        System.out.println("Tiempo para los casos de prueba: " + reloj.elapsedTime());
+
+         */
     }
 
     public static main getMiMain() {
@@ -96,7 +88,7 @@ public class main {
             while (entrada.hasNext()) {
                 linea = entrada.nextLine();
                 String datos[] = linea.split(":+"); // el split para dividir los datos
-                ListaWebs.getMiListaWebs().insertarWeb(new Web(datos[1], Integer.valueOf(datos[0]))); //Creamos la web con los dos datos leidos
+                ListaWebs.getMiListaWebs().insertarWeb(new Web(datos[1], Integer.valueOf(datos[0]), ListaWebs.getMiListaWebs().web2Words(datos[1]))); //Creamos la web con los dos datos leidos
             }
             entrada.close();
         } catch (IOException e) {
@@ -105,7 +97,33 @@ public class main {
         System.out.println("Lista Index cargada");
 
     }
+    public void cargarListaPalabras(String nomF)
+    {
+        //Coste operativo : O(n) --> Lineal
 
+        System.out.println("Cargando lista palabras");
+        try
+        {
+            //Abrimos y preparamos el scanner
+            Scanner entrada = new Scanner(new FileReader(nomF));
+            String linea;
+
+            while (entrada.hasNext())
+            {
+                //Leemos la palabra
+                linea = entrada.nextLine();
+
+                //Y la metemos en la lista de la MAE
+                ListaPalabras.getMiListaPalabras().insertarPalabra(linea);
+
+            }
+            entrada.close();
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Lista palabras cargada");
+    }
     public void cargarListaRelaciones(String nomF) {
         //Coste operativo de esto : n * media de relaciones entre webs, pero no es mucho entonces O(n) --> coste lineal
 
