@@ -314,7 +314,7 @@ public class ListaWebs
             String palabra;
             while (cont < length){
                 palabra = ListaPalabras.getMiListaPalabras().obtenerPalabra(cont);
-                if (laWeb.getNombre().contains(palabra)){
+                if (laWeb.getNombre().indexOf(palabra) != -1){
                     listaReturn.add(palabra);
                 }
                 cont ++;
@@ -322,7 +322,8 @@ public class ListaWebs
         }
         return listaReturn;
     }
-    public String[] web2Words2(String pWeb, Web laWeb)
+
+    public String[] web2Words2(Web laWeb)
     {
         ArrayList<String> listaReturn = new ArrayList<String>();
         if (laWeb!=null)
@@ -330,24 +331,11 @@ public class ListaWebs
             Integer length = ListaPalabras.getMiListaPalabras().getLength();
             Integer cont = 0;
             String palabra;
-            char car = ' ';
-            boolean bool = true;
             while (cont < length)
             {
                 palabra = ListaPalabras.getMiListaPalabras().obtenerPalabra(cont);
-                if (palabra != null && palabra != "")
-                {
-                    if (palabra.charAt(0) != car)
-                    {
-                        car = palabra.charAt(0);
-                        bool = pWeb.indexOf(car) != -1;
-                    }
-                    else if (bool)
-                    {
-                        if (laWeb.getNombre().contains(palabra)) {
-                            listaReturn.add(palabra);
-                        }
-                    }
+                if (laWeb.getNombre().contains(palabra)){
+                    listaReturn.add(palabra);
                 }
                 cont ++;
             }
@@ -356,6 +344,7 @@ public class ListaWebs
         ret = listaReturn.toArray(ret);
         return ret;
     }
+
     public void borrarLista()
     {
         lista = new ArrayList<Web>();

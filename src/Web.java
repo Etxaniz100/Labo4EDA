@@ -36,6 +36,7 @@ public class Web
     {
         return (this.listaRelaciones);
     }
+    public void setPalabras(String[] pal) { palabras = pal; }
     public void setId(Integer pId)
     {
         this.id= pId;
@@ -47,6 +48,20 @@ public class Web
     public Iterator<Web> getIterator()
     {
         return this.getIterator();
+    }
+    public void obtenerPalabrasClave()
+    {
+        String s = nombre.substring(nombre.indexOf(":") + 1, nombre.indexOf("."));
+        int i = 0;
+        for(int pos=0;pos<s.length();pos++)
+        {
+            for(int longitud=3;longitud<=10 && pos+longitud<s.length();longitud++) {
+                String palabra = s.substring(pos, pos+longitud);
+                palabras[i] = palabra;
+                i++;
+            }
+        }
+
     }
 
 }

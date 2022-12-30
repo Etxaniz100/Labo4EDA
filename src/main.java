@@ -6,9 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Scanner;
+import java.util.*;
 
 public class main {
 
@@ -31,22 +29,17 @@ public class main {
         Path path = Paths.get("");
         main.getMiMain().cargarListaPalabras(path.toAbsolutePath().toString() + "\\words.txt");
         System.out.println("Tiempo para cargar las palabras: " + reloj.elapsedTime());
-        System.out.println(ListaPalabras.getMiListaPalabras().getHashMap().get(1));
-        System.out.println(ListaPalabras.getMiListaPalabras().getHashMap().get(2));
-        System.out.println(ListaPalabras.getMiListaPalabras().getHashMap().get(3));
-        System.out.println(ListaPalabras.getMiListaPalabras().getHashMap().get(4));
-        System.out.println(ListaPalabras.getMiListaPalabras().getHashMap().get(8));
-        System.out.println(ListaPalabras.getMiListaPalabras().getHashMap().get(10));
+        HashMap<Integer, Character> hs = ListaPalabras.getMiListaPalabras().getHashMap();
+        System.out.println(hs.get(1));
+        System.out.println(hs.keySet());
 
         main.getMiMain().cargarListaIndex(path.toAbsolutePath().toString() + "\\listaPeque");
         System.out.println("Tiempo para cargar las webs: " + reloj.elapsedTime());
         main.getMiMain().cargarListaRelaciones(path.toAbsolutePath().toString() + "\\relacionesPeque");
         System.out.println("Tiempo para cargar las relaciones: " + reloj.elapsedTime());
-
         Graph grafo = new Graph(ListaWebs.getMiListaWebs().getLista().size());
         grafo.crearGrafo(ListaWebs.getMiListaWebs());
         System.out.println("Tiempo para crear el grafo: " + reloj.elapsedTime());
-
 
         System.out.println("Caso de prueba web2Words");
         System.out.println(ListaWebs.getMiListaWebs().web2Words("devalt.org"));
@@ -94,19 +87,21 @@ public class main {
             String linea;
             while (entrada.hasNext()) {
                 linea = entrada.nextLine();
-                String datos[] = linea.split(":+"); // el split para dividir los datos
-                String unDato = datos[0];
-                String dosDato = datos[1];
-                Integer unInt = Integer.valueOf(unDato);
-                Web unaWeb = new Web(dosDato, unInt);
-                ListaWebs.getMiListaWebs().insertarWeb(new Web(dosDato, unInt, ListaWebs.getMiListaWebs().web2Words2(dosDato, unaWeb))); //Creamos la web con los dos datos leidos
+                // el split para dividir los datos
+                String datos[] = linea.split(":+");
+                //Creamos la web con los dos datos leidos
+                // el limite de 1000 es algo arbitrario
+                Web laWeb = new Web(datos[1], Integer.valueOf(datos[0]), new String[1000]);
+                laWeb.obtenerPalabrasClave();
+                ListaWebs.getMiListaWebs().insertarWeb(laWeb);
             }
             entrada.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
         System.out.println("Lista Index cargada");
-
+        ListaPalabras.getMiListaPalabras().crearHashMap();
+        System.out.println("Palabras insertadas");
     }
     public void cargarListaPalabras(String nomF)
     {
@@ -126,7 +121,6 @@ public class main {
 
                 //Y la metemos en la lista de la MAE
                 ListaPalabras.getMiListaPalabras().insertarPalabra(linea);
-
             }
             entrada.close();
         }

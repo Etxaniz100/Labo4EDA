@@ -6,7 +6,8 @@ public class Graph {
     private HashMap<String, Integer> th;
     private String[] keys;
     private ArrayList<Integer>[] adjList;
-
+    private ArrayList<Integer>[] enlacesEntrantes;
+    private TreeSet<String>[] listaPalabras;
 
     public Graph(int l)
     {
