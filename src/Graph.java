@@ -17,7 +17,8 @@ public class Graph {
         listaPalabras = new TreeSet[l];
     }
 
-    public void crearGrafo(ListaWebs lista) {
+    public void crearGrafo(ListaWebs lista)
+    {
         // Post: crea el grafo desde la lista de webs
         //       Los nodos son nombres de webs
 
@@ -33,14 +34,18 @@ public class Graph {
             //Este arrayList se añadira a adjList
             ArrayList<Integer> idEnlaces = new ArrayList<Integer>();
             Web webActual = itr.next(); //Obtenemos la web
-            try {
+            try
+            {
                 th.put(webActual.getNombre(), webActual.getId()); //Y la añadimos al HashMap
-            } catch (OutOfMemoryError oome) {
+            }
+            catch (OutOfMemoryError oome)
+            {
                 System.out.println(webActual.getId());
                 System.err.println("Max JVM memory: " + Runtime.getRuntime().maxMemory());
             }
             ArrayList<Web> enlaces = webActual.enlacesSalientes(); //Obtenemos los enlaces salientes de la web
-            if (enlaces != null) {
+            if (enlaces != null)
+            {
                 Iterator<Web> itrEnlaces = enlaces.iterator();     //Y el iterador de esa lista
                 while (itrEnlaces.hasNext())                       //Recorremos los enlaces
                 {
@@ -57,8 +62,10 @@ public class Graph {
 
     }
 
-    public void print() {
-        for (int i = 0; i < adjList.length; i++) {
+    public void print()
+    {
+        for (int i = 0; i < adjList.length; i++)
+        {
             System.out.print("Element: " + i + " " + keys[i] + " --> ");
 
             for (int k : adjList[i]) System.out.print(keys[k] + " ### ");
@@ -67,44 +74,53 @@ public class Graph {
         }
     }
 
-    public ArrayList<String> estanConectados2(String a1, String a2) {
+    public ArrayList<String> estanConectados2(String a1, String a2)
+    {
         //Post : Se devuelve un arrayList con el camino que conecta a los dos elementos.
         //       Si alguno de los elementos es nulo se devuelve null.
 
-        if (th.isEmpty() || th.get(a1) == null || th.get(a2) == null) {
+        if (th.isEmpty() || th.get(a1) == null || th.get(a2) == null)
+        {
             System.out.println("Null");
             return new ArrayList<String>();
-        } else {
+        }
+        else
+        {
             Integer pos1 = th.get(a1);
             Integer pos2 = th.get(a2);
             ArrayList<String> listaRet;
-            if (pos1.equals(pos2)) {
+            if (pos1.equals(pos2))
+            {
                 listaRet = new ArrayList<String>(1);
                 listaRet.add(a1);
-            } else {
+            }
+            else
+            {
                 //Preparamos las diferentes variables
                 boolean enc = false;
                 boolean[] examinados = new boolean[th.size()];
                 Integer[] camino = new Integer[th.size()];
                 listaRet = new ArrayList<String>();
                 Queue<Integer> porExaminar = new LinkedList<Integer>();
-
                 //Anadimos a la cola por examinar el primer elemento
                 porExaminar.add(pos1);
                 Integer act = pos1;
                 camino[pos1] = -1; // punto de inicio
 
                 //Mientras que no encontremos el elemento final y haya elementos en la cola
-                while (!enc && !porExaminar.isEmpty()) {
+                while (!enc && !porExaminar.isEmpty())
+                {
                     act = porExaminar.poll();
                     examinados[act] = true;
                     for (int i = 0; i < adjList[act].size(); i++)     // bucle de relaciones
                     {
-                        if (!porExaminar.contains(adjList[act].get(i)) && !examinados[adjList[act].get(i)]) {
+                        if (!porExaminar.contains(adjList[act].get(i)) && !examinados[adjList[act].get(i)])
+                        {
                             //Se anade a la cola
                             porExaminar.add(adjList[act].get(i));
 
-                            if (adjList[act].get(i) != act && adjList[act].get(i) != pos1) {
+                            if (adjList[act].get(i) != act && adjList[act].get(i) != pos1)
+                            {
                                 //Y se anade al camino de donde viene el nuevo elemento
                                 camino[adjList[act].get(i)] = act;
                             }
@@ -114,25 +130,19 @@ public class Graph {
                     if (pos2.equals(act)) {
                         enc = true;
                     }
-
-                    //Sacamos al siguiente elemento por examinar
-
-
                 }
-                if (enc) {
+                if (enc)
+                {
 
-                    ArrayList<Integer> prueba = new ArrayList<>(Arrays.asList(camino));
-                    //System.out.println(prueba);
                     Integer elemAct = act;
                     listaRet.add(a2);
                     //Retrocedemos en el camino para crear la lista a devolver
-                    while (elemAct != -1 || act == pos1) {
-                        if (listaRet.contains(keys[elemAct])) {
-                            elemAct = camino[elemAct];
-                        } else {
+                    while (elemAct != -1 || act == pos1)
+                    {
+                        if (!listaRet.contains(keys[elemAct])) {
                             listaRet.add(keys[elemAct]);
-                            elemAct = camino[elemAct];
                         }
+                        elemAct = camino[elemAct];
 
                     }
                 }
@@ -142,13 +152,15 @@ public class Graph {
         }
     }
 
-    public HashMap<String, Double> pageRank() {
+    public HashMap<String, Double> pageRank()
+    {
         //Inicialización del método
         HashMap<String, Double> rdo = new HashMap<>();
         HashMap<String, Double> it_ant = new HashMap<>();
         Double prInicio = Double.valueOf(1 / th.size());
 
-        for (int i = 0; i < keys.length; i++) {
+        for (int i = 0; i < keys.length; i++)
+        {
             it_ant.put(keys[i], prInicio);
         }
         rdo = it_ant;
@@ -159,16 +171,20 @@ public class Graph {
         Double sumaAct = 0.0;
         Double newPR;
 
-        while (!terminado) {
+        while (!terminado)
+        {
             //Empiezan las iteraciones del pageRank
             for (String dir : rdo.keySet()) {
                 newPR = PrOneWeb(it_ant, th.get(dir), numNodos);
                 sumaAct = sumaAct + newPR;
                 rdo.replace(dir, newPR);
             }
-            if (Math.abs(sumaAct - sumaAnt) < 0.0001) {
+            if (Math.abs(sumaAct - sumaAnt) < 0.0001)
+            {
                 terminado = true;
-            } else {
+            }
+            else
+            {
                 sumaAnt = sumaAct;
                 it_ant = rdo;
                 sumaAct = 0.0;
@@ -177,20 +193,19 @@ public class Graph {
         return rdo;
     }
 
-    private Double PrOneWeb(HashMap<String, Double> hm, int i, int numNodos) {
-
-        Double rdo;
-        Double d = 0.85;
-        Double sum = sumatorio(hm, i);
-        rdo = ((1 - d) / numNodos) + d * sum;
+    private Double PrOneWeb(HashMap<String, Double> hm, int i, int numNodos)
+    {
+        Double rdo = ((1 - 0.85) / numNodos) + 0.85 * sumatorio(hm, i);
         return rdo;
     }
 
-    private Double sumatorio(HashMap<String, Double> hm, int i) {
-        //System.out.println("Sumatorio");
+    private Double sumatorio(HashMap<String, Double> hm, int i)
+    {
+
         Double rdo = 0.0;
         Double enlSalientes;
-        for (int webI = 0; webI < enlacesEntrantes[i].size(); webI++) {
+        for (int webI = 0; webI < enlacesEntrantes[i].size(); webI++)
+        {
             int web = enlacesEntrantes[i].get(webI);
             enlSalientes = Double.valueOf(adjList[web].size());
             rdo = rdo + (hm.get(keys[web]) / enlSalientes);
@@ -201,15 +216,17 @@ public class Graph {
     public void llenarListaPalabras() {
 
         listaPalabras = (TreeSet<String>[]) new TreeSet[adjList.length];
-        for (int i = 0; i < keys.length; i++) {
+        for (int i = 0; i < keys.length; i++)
+        {
             String dir = keys[i];
-            int pos2Puntos = dir.indexOf(":");
-            int posPunto = dir.indexOf(".");
-            String s = dir.substring(pos2Puntos + 1, posPunto);
-            for (int pos = 0; pos < s.length(); pos++) {
-                for (int longitud = 3; longitud <= 10 && pos + longitud <= s.length(); longitud++) {
+            String s = dir.substring(dir.indexOf(":") + 1, dir.indexOf("."));
+            for (int pos = 0; pos < s.length(); pos++)
+            {
+                for (int longitud = 3; longitud <= 10 && pos + longitud <= s.length(); longitud++)
+                {
                     String palabra = s.substring(pos, pos + longitud);
-                    if (listaPalabras[i] == null) {
+                    if (listaPalabras[i] == null)
+                    {
                         listaPalabras[i] = new TreeSet<String>();
                     }
                     listaPalabras[i].add(palabra);
