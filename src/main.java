@@ -80,7 +80,7 @@ public class main {
     }
 
     public void cargarListaIndex(String nomF) {
-        //Coste operativo : O(n) --> Lineal
+        // Coste operativo : O(n) --> Lineal
         System.out.println("Cargando lista index");
         try {
             Scanner entrada = new Scanner(new FileReader(nomF));
@@ -89,7 +89,7 @@ public class main {
                 linea = entrada.nextLine();
                 // el split para dividir los datos
                 String datos[] = linea.split(":+");
-                //Creamos la web con los dos datos leidos
+                // Creamos la web con los dos datos leidos
                 // el limite de 1000 es algo arbitrario
                 Web laWeb = new Web(datos[1], Integer.valueOf(datos[0]), new String[1000]);
                 laWeb.obtenerPalabrasClave();
@@ -106,7 +106,6 @@ public class main {
     public void cargarListaPalabras(String nomF)
     {
         //Coste operativo : O(n) --> Lineal
-
         System.out.println("Cargando lista palabras");
         try
         {
