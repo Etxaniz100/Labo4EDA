@@ -9,7 +9,8 @@ public class Graph {
     private ArrayList<Integer>[] enlacesEntrantes;
     private TreeSet<String>[] listaPalabras;
 
-    public Graph(int l) {
+    public Graph(int l)
+    {
         th = new HashMap<String, Integer>();
         keys = new String[l];
         adjList = new ArrayList[l];
@@ -195,7 +196,9 @@ public class Graph {
 
     private Double PrOneWeb(HashMap<String, Double> hm, int i, int numNodos)
     {
-        Double rdo = ((1 - 0.85) / numNodos) + 0.85 * sumatorio(hm, i);
+        // dumping factor
+        Double dFact = 0.85;
+        Double rdo = ((1 - dFact) / numNodos) + dFact * sumatorio(hm, i);
         return rdo;
     }
 
@@ -204,17 +207,20 @@ public class Graph {
 
         Double rdo = 0.0;
         Double enlSalientes;
-        for (int webI = 0; webI < enlacesEntrantes[i].size(); webI++)
+        if (enlacesEntrantes[i]!=null)
         {
-            int web = enlacesEntrantes[i].get(webI);
-            enlSalientes = Double.valueOf(adjList[web].size());
-            rdo = rdo + (hm.get(keys[web]) / enlSalientes);
+            for (int webI = 0; webI < enlacesEntrantes[i].size(); webI++)
+            {
+                int web = enlacesEntrantes[i].get(webI);
+                enlSalientes = Double.valueOf(adjList[web].size());
+                rdo = rdo + (hm.get(keys[web]) / enlSalientes);
+            }
         }
         return rdo;
     }
 
-    public void llenarListaPalabras() {
-
+    public void llenarListaPalabras()
+    {
         listaPalabras = (TreeSet<String>[]) new TreeSet[adjList.length];
         for (int i = 0; i < keys.length; i++)
         {
@@ -232,9 +238,44 @@ public class Graph {
                     listaPalabras[i].add(palabra);
                 }
             }
-
         }
-    /*
+    }
+
+    public void imprimirListaPalabras()
+    {
+        for (int i =0; i<listaPalabras.length; i++)
+        {
+            System.out.println(keys[i]);
+            for (int j=0; j<listaPalabras[i].size(); j++)
+            {
+                System.out.println(listaPalabras[i].iterator().next());
+            }
+            System.out.println("");
+        }
+    }
+
+    public ArrayList<Par> buscarPaginas(String pal1, String pal2)
+    {
+        ArrayList<Par> rdo = new ArrayList<Par>();
+        HashMap<String, Double> pageRank = pageRank();
+        // bucle
+        for (int i =0; i< listaPalabras.length; i++)
+        {
+            if (listaPalabras[i]!=null && listaPalabras[i].contains(pal1) && listaPalabras[i].contains(pal2))
+            {
+                String nom = keys[i];
+                Par nuevoPar = new Par(nom, pageRank.get(nom));
+                rdo.add(nuevoPar);
+            }
+        }
+        // Al no tener los atributos publicos no se puede hacer un o2.pageRank, ya que tenemos que usar
+        // el getter de la clase. Ademas, aqui se usa la clase comparator, que se emplea para
+        // hacer el sort de manera muy eficiente y practica, puesto que ordena los elementos
+        // en base a su pagerank, que es lo que nos interesa
+        // por tanto, con solo emplear esta linea es suficiente
+        rdo.sort(((o1, o2) -> o2.getPageRank().compareTo(o1.getPageRank())));
+        return rdo;
+    }
     public ArrayList<String> estanConectados(String a1, String a2){
         // El resultado será una lista de relaciones desde a1 hasta a2, donde
         // cada relación indica que esos 2 elementos están conectados.
@@ -305,6 +346,5 @@ public class Graph {
         }
         return listaRet;
     }
-     */
-    }
+
 }

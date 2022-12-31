@@ -1,3 +1,4 @@
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -51,16 +52,20 @@ public class Web
     }
     public void obtenerPalabrasClave()
     {
+        ArrayList<String> lasPal = new ArrayList<>();
         String s = nombre.substring(nombre.indexOf(":") + 1, nombre.indexOf("."));
-        int i = 0;
-        for(int pos=0;pos<s.length();pos++)
+        for(int pos=0; pos < s.length(); pos++)
         {
-            for(int longitud=3;longitud<=10 && pos+longitud<s.length();longitud++) {
-                String palabra = s.substring(pos, pos+longitud);
-                palabras[i] = palabra;
-                i++;
+            for(int longitud=3; longitud <= 10 && pos + longitud < s.length(); longitud++) {
+                String palabra = s.substring(pos, pos + longitud);
+                lasPal.add(palabra);
             }
         }
+        palabras = lasPal.toArray(new String[lasPal.size()]);
+    }
+    public String[] getPalabras()
+    {
+        return palabras;
     }
 
 }

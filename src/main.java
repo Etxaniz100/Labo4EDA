@@ -29,10 +29,11 @@ public class main {
         Path path = Paths.get("");
         main.getMiMain().cargarListaPalabras(path.toAbsolutePath().toString() + "\\words.txt");
         System.out.println("Tiempo para cargar las palabras: " + reloj.elapsedTime());
+        /*
         HashMap<Integer, Character> hs = ListaPalabras.getMiListaPalabras().getHashMap();
         System.out.println(hs.get(1));
         System.out.println(hs.keySet());
-
+        */
         main.getMiMain().cargarListaIndex(path.toAbsolutePath().toString() + "\\listaPeque");
         System.out.println("Tiempo para cargar las webs: " + reloj.elapsedTime());
         main.getMiMain().cargarListaRelaciones(path.toAbsolutePath().toString() + "\\relacionesPeque");
@@ -40,17 +41,19 @@ public class main {
         Graph grafo = new Graph(ListaWebs.getMiListaWebs().getLista().size());
         grafo.crearGrafo(ListaWebs.getMiListaWebs());
         System.out.println("Tiempo para crear el grafo: " + reloj.elapsedTime());
-
+        /*
         System.out.println("Caso de prueba web2Words");
         System.out.println(ListaWebs.getMiListaWebs().web2Words("devalt.org"));
         System.out.println(ListaWebs.getMiListaWebs().web2Words("campofrio.es"));
         System.out.println(ListaWebs.getMiListaWebs().web2Words("alphadatainternational.com"));
         System.out.println(ListaWebs.getMiListaWebs().web2Words("business-english-dresden.de"));
-
-
+        */
+        grafo.llenarListaPalabras();
+        System.out.println("Tiempo para llenar las palabras: " + reloj.elapsedTime());
+        grafo.pageRank();
+        System.out.println("Tiempo para calcular el pageRank: " + reloj.elapsedTime());
         /*
         grafo.print();
-
         System.out.println("Tiempo para los casos de prueba: " + reloj.elapsedTime());
         System.out.println("Caso 1-> El mismo elemento");
         System.out.println(grafo.estanConectados2(ListaWebs.getMiListaWebs().getLista().get(0).getNombre(),ListaWebs.getMiListaWebs().getLista().get(0).getNombre()).toString());
@@ -67,8 +70,15 @@ public class main {
         System.out.println("Caso 3.2-> Ningun elemento esta en la lista");
         System.out.println(grafo.estanConectados2("webquenoestaenlalista1","webquenoestaenlalista2"));;
         System.out.println("Tiempo para los casos de prueba: " + reloj.elapsedTime());
-
          */
+        // palabras que si estan
+        ArrayList<Par> listPar = grafo.buscarPaginas("money","bank");
+        for (int i =0; i<listPar.size(); i++)
+        {
+            System.out.println(listPar.get(i).getWeb() + " -> " + listPar.get(i).getPageRank());
+        }
+        // palabras que no estan
+        listPar = grafo.buscarPaginas("unapalabraquenoesta", "otrapalabratotalmentedistinta");
     }
 
     public static main getMiMain() {
@@ -91,7 +101,7 @@ public class main {
                 String datos[] = linea.split(":+");
                 // Creamos la web con los dos datos leidos
                 // el limite de 1000 es algo arbitrario
-                Web laWeb = new Web(datos[1], Integer.valueOf(datos[0]), new String[1000]);
+                Web laWeb = new Web(datos[1], Integer.valueOf(datos[0]), new String[datos[1].length()]);
                 laWeb.obtenerPalabrasClave();
                 ListaWebs.getMiListaWebs().insertarWeb(laWeb);
             }

@@ -34,7 +34,6 @@ public class ListaPalabras
             String palabra = listaPalabras.get(cont);
             if (palabra != null && palabra != "" && car != palabra.charAt(0))
             {
-                System.out.println(car);
                 car = palabra.charAt(0);
                 posCaracteres.put(cont, car);
             }
