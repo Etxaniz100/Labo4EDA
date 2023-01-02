@@ -21,26 +21,32 @@ public class main {
     // ------ Metodos ------
     public static void main(String args[]) {
 
-
+        double aux = 0;
         Stopwatch reloj = new Stopwatch();       // Inicialización
-        System.out.println("Tiempo inicial: " + reloj.elapsedTime());
+        aux = reloj.elapsedTime();
+        System.out.println("Tiempo inicial: " + aux);
 
 
         Path path = Paths.get("");
         main.getMiMain().cargarListaPalabras(path.toAbsolutePath().toString() + "\\words.txt");
-        System.out.println("Tiempo para cargar las palabras: " + reloj.elapsedTime());
+
+        System.out.println("Tiempo para cargar las palabras: " + (reloj.elapsedTime() - aux));
+        aux = reloj.elapsedTime();
         /*
         HashMap<Integer, Character> hs = ListaPalabras.getMiListaPalabras().getHashMap();
         System.out.println(hs.get(1));
         System.out.println(hs.keySet());
         */
         main.getMiMain().cargarListaIndex(path.toAbsolutePath().toString() + "\\listaPeque");
-        System.out.println("Tiempo para cargar las webs: " + reloj.elapsedTime());
+        System.out.println("Tiempo para cargar las webs: " + (reloj.elapsedTime() - aux));
+        aux = reloj.elapsedTime();
         main.getMiMain().cargarListaRelaciones(path.toAbsolutePath().toString() + "\\relacionesPeque");
-        System.out.println("Tiempo para cargar las relaciones: " + reloj.elapsedTime());
+        System.out.println("Tiempo para cargar las relaciones: " + (reloj.elapsedTime() - aux));
+        aux = reloj.elapsedTime();
         Graph grafo = new Graph(ListaWebs.getMiListaWebs().getLista().size());
         grafo.crearGrafo(ListaWebs.getMiListaWebs());
-        System.out.println("Tiempo para crear el grafo: " + reloj.elapsedTime());
+        System.out.println("Tiempo para crear el grafo: " + (reloj.elapsedTime() - aux));
+        aux = reloj.elapsedTime();
         /*
         System.out.println("Caso de prueba web2Words");
         System.out.println(ListaWebs.getMiListaWebs().web2Words("devalt.org"));
@@ -49,9 +55,11 @@ public class main {
         System.out.println(ListaWebs.getMiListaWebs().web2Words("business-english-dresden.de"));
         */
         grafo.llenarListaPalabras();
-        System.out.println("Tiempo para llenar las palabras: " + reloj.elapsedTime());
+        System.out.println("Tiempo para llenar las palabras: " + (reloj.elapsedTime() - aux));
+        aux = reloj.elapsedTime();
         grafo.pageRank();
-        System.out.println("Tiempo para calcular el pageRank: " + reloj.elapsedTime());
+        System.out.println("Tiempo para calcular el pageRank: " + (reloj.elapsedTime() - aux));
+        aux = reloj.elapsedTime();
         /*
         grafo.print();
         System.out.println("Tiempo para los casos de prueba: " + reloj.elapsedTime());

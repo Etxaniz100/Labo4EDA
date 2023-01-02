@@ -4,7 +4,7 @@ import java.util.*;
 public class Graph {
 
     private HashMap<String, Integer> th;
-    private String[] keys;
+    private String[] keys;   //Nombres de los diferentes nodos del grafo
     private ArrayList<Integer>[] adjList;
     private ArrayList<Integer>[] enlacesEntrantes;
     private TreeSet<String>[] listaPalabras;
@@ -156,17 +156,25 @@ public class Graph {
     public HashMap<String, Double> pageRank()
     {
         //Inicialización del método
-        HashMap<String, Double> rdo = new HashMap<>();
-        HashMap<String, Double> it_ant = new HashMap<>();
-        Double prInicio = Double.valueOf(1 / th.size());
+        HashMap<String, Double> rdo = new HashMap<>();              //HashMap que devuelve
+        HashMap<String, Double> it_ant = new HashMap<>();           //HashMap que guarda los valores de la iteracion anterior
+        Double prInicio = Double.valueOf(1 / th.size());         //Page Rank inicial asociado a todos los elementos
 
-        for (int i = 0; i < keys.length; i++)
+        for (int i = 0; i < keys.length; i++)                       //Inicializacion del hashMap que guarda los valores de la iteracion anterir
         {
-            it_ant.put(keys[i], prInicio);
+            it_ant.put(keys[i], prInicio);                          //Añade cada nombre de los nodos al hashMap
         }
-        rdo = it_ant;
 
-        int numNodos = rdo.size();
+        //------------------------------------------------------------
+        //rdo = it_ant;
+
+        for (int i = 0; i < keys.length; i++)                       //Inicializacion del hashMap que guarda los valores de la iteracion actual
+        {
+            rdo.put(keys[i], prInicio);                             //Añade cada nombre de los nodos al hashMap
+        }
+        //------------------------------------------------------------
+
+        int numNodos = rdo.size();                                  //Almacenamos en una variable el numero de nodos
         boolean terminado = false;
         Double sumaAnt = prInicio * numNodos;
         Double sumaAct = 0.0;
@@ -175,30 +183,47 @@ public class Graph {
         while (!terminado)
         {
             //Empiezan las iteraciones del pageRank
-            for (String dir : rdo.keySet()) {
-                newPR = PrOneWeb(it_ant, th.get(dir), numNodos);
-                sumaAct = sumaAct + newPR;
-                rdo.replace(dir, newPR);
+            for (String dir : rdo.keySet()) {                       //Para cada elemento del hashMap
+                newPR = PrOneWeb(it_ant, th.get(dir), numNodos);    //Calculamos su nuevo page rank
+                sumaAct = sumaAct + newPR;                          //Sumamos al valor total de los page rank de esta iteracion el nuevo valor
+                rdo.replace(dir, newPR);                            //Sustituimos en el hashMap resultado el nuevo PageRank
             }
-            if (Math.abs(sumaAct - sumaAnt) < 0.0001)
+            if (Math.abs(sumaAct - sumaAnt) < 0.0001)               //Si la diferencia entre las dos iteraciones anteriores es practicamente nula
             {
-                terminado = true;
+                terminado = true;                                   //Se da por terminado el ciclo
             }
-            else
+            else                                                    //Si no
             {
                 sumaAnt = sumaAct;
-                it_ant = rdo;
+                //------------------------------------------------------
+                //it_ant = rdo;
+                copiarHashMap(rdo,it_ant);                          //Pasamos los valores del hashMap rdo al que guarda los valores de la iteracion anterior
+                //------------------------------------------------------
                 sumaAct = 0.0;
             }
         }
         return rdo;
     }
 
+    public void copiarHashMap(HashMap<String, Double> origen, HashMap<String, Double> destino)
+    {
+        for (String key : origen.keySet())                          //Para cada elemento del hashMap
+        {
+            destino.replace(key, origen.get(key));                  //Pasa el valor del origen al destino
+        }
+    }
     private Double PrOneWeb(HashMap<String, Double> hm, int i, int numNodos)
     {
         // dumping factor
-        Double dFact = 0.85;
+        Double dFact = 0.85;                                        //Valor que indica el damping factor
         Double rdo = ((1 - dFact) / numNodos) + dFact * sumatorio(hm, i);
+        /*
+                                                      N
+                          1 - dFact                 \---       [PR(i)] PrOneWeb(i)
+        [PR(A)]  rdo  =   ---------   +    dFact *   >    ------------------------------
+                          numNodos                  /---   [C(i)]  NumEnlacesSalientes(i)
+                                                    i = 1
+         */
         return rdo;
     }
 
@@ -207,13 +232,18 @@ public class Graph {
 
         Double rdo = 0.0;
         Double enlSalientes;
-        if (enlacesEntrantes[i]!=null)
+        if (enlacesEntrantes[i]!=null)                                      //Si tiene enlaces entrantes :
         {
-            for (int webI = 0; webI < enlacesEntrantes[i].size(); webI++)
+            for (int webI = 0; webI < enlacesEntrantes[i].size(); webI++)   //Para que elemento que dirija a esta web :
             {
                 int web = enlacesEntrantes[i].get(webI);
                 enlSalientes = Double.valueOf(adjList[web].size());
                 rdo = rdo + (hm.get(keys[web]) / enlSalientes);
+                /*
+                             PageRank de iteracion anterior de web
+                rdo = rdo + --------------------------------------
+                            numero de enlaces salientes de esa web
+                */
             }
         }
         return rdo;
