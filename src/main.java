@@ -37,10 +37,10 @@ public class main {
         System.out.println(hs.get(1));
         System.out.println(hs.keySet());
         */
-        main.getMiMain().cargarListaIndex(path.toAbsolutePath().toString() + "\\listaPeque");
+        main.getMiMain().cargarListaIndex(path.toAbsolutePath().toString() + "\\listaPrueba");
         System.out.println("Tiempo para cargar las webs: " + (reloj.elapsedTime() - aux));
         aux = reloj.elapsedTime();
-        main.getMiMain().cargarListaRelaciones(path.toAbsolutePath().toString() + "\\relacionesPeque");
+        main.getMiMain().cargarListaRelaciones(path.toAbsolutePath().toString() + "\\enlacesPrueba");
         System.out.println("Tiempo para cargar las relaciones: " + (reloj.elapsedTime() - aux));
         aux = reloj.elapsedTime();
         Graph grafo = new Graph(ListaWebs.getMiListaWebs().getLista().size());
@@ -80,7 +80,12 @@ public class main {
         System.out.println("Tiempo para los casos de prueba: " + reloj.elapsedTime());
          */
         // palabras que si estan
-        ArrayList<Par> listPar = grafo.buscarPaginas("money","bank");
+        ArrayList<Par> listPar = grafo.buscarPaginas("money","bitcoin");
+        for (int i =0; i<listPar.size(); i++)
+        {
+            System.out.println(listPar.get(i).getWeb() + " -> " + listPar.get(i).getPageRank());
+        }
+        listPar = grafo.buscarPaginas("free","money");
         for (int i =0; i<listPar.size(); i++)
         {
             System.out.println(listPar.get(i).getWeb() + " -> " + listPar.get(i).getPageRank());
