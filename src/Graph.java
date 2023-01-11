@@ -316,10 +316,9 @@ public class Graph {
         }
     }
 
-    public ArrayList<Par> buscarPaginas(String pal1, String pal2)
+    public ArrayList<Par> buscarPaginas(String pal1, String pal2, HashMap<String, Double> pageRank)
     {
         ArrayList<Par> rdo = new ArrayList<Par>();
-        HashMap<String, Double> pageRank = pageRank();
         // bucle
         for (int i =0; i< listaPalabras.length; i++)
         {

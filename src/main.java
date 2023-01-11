@@ -76,23 +76,30 @@ public class main {
         System.out.println(grafo.estanConectados2("webquenoestaenlalista1","webquenoestaenlalista2"));;
         System.out.println("Tiempo para los casos de prueba: " + reloj.elapsedTime());
          */
-        // palabras que si estan
+        HashMap<String, Double> pageRank = grafo.pageRank();
+        System.out.println("Tiempo para calcular el pagerank: " + (reloj.elapsedTime() - aux));
+        aux = reloj.elapsedTime();
 
-        ArrayList<Par> listPar = grafo.buscarPaginas("money","bitcoin");
+        // palabras que si estan
+        ArrayList<Par> listPar = grafo.buscarPaginas("beach","the", pageRank);
+        for (int i =0; i<listPar.size(); i++)
+        {
+            System.out.println("< " + listPar.get(i).getWeb() + ", " + listPar.get(i).getPageRank() + " >");
+        }
         System.out.println("Tiempo para buscar las paginas: " + (reloj.elapsedTime() - aux));
+
+        aux = reloj.elapsedTime();
+        listPar = grafo.buscarPaginas("blue","money", pageRank);
         for (int i =0; i<listPar.size(); i++)
         {
-            System.out.println(listPar.get(i).getWeb() + " -> " + listPar.get(i).getPageRank());
+            System.out.println("< " + listPar.get(i).getWeb() + ", " + listPar.get(i).getPageRank() + " >");
         }
-        /*
-        listPar = grafo.buscarPaginas("free","money");
-        for (int i =0; i<listPar.size(); i++)
-        {
-            System.out.println(listPar.get(i).getWeb() + " -> " + listPar.get(i).getPageRank());
-        }
+        System.out.println("Tiempo para buscar las paginas: " + (reloj.elapsedTime() - aux));
+
         // palabras que no estan
-        listPar = grafo.buscarPaginas("unapalabraquenoesta", "otrapalabratotalmentedistinta");
-         */
+        aux = reloj.elapsedTime();
+        listPar = grafo.buscarPaginas("unapalabraquenoesta", "otrapalabratotalmentedistinta", pageRank);
+        System.out.println("Tiempo para buscar las paginas: " + (reloj.elapsedTime() - aux));
     }
 
     public static main getMiMain() {
