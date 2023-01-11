@@ -60,7 +60,7 @@ public class Graph {
         // Paso 2: llenar “keys”
         keys = new String[th.size()];
         for (String k : th.keySet()) keys[th.get(k)] = k;
-
+        obtenerEnlacesEntrantes();
     }
 
     public void print()
@@ -203,6 +203,24 @@ public class Graph {
         return rdo;
     }
 
+    public void obtenerEnlacesEntrantes() {
+        //ES CORRECTO SU FUNCIONAMIENTO, ESTÁ COMPROBADO
+
+        //Mediante este método obtenemos una estructura de datos en la que tenemos
+        //los enlaces entrantes a cada web, necesario para calcular el PageRank
+
+        enlacesEntrantes = (ArrayList<Integer>[]) new ArrayList[adjList.length];
+
+        for (int i = 0; i < enlacesEntrantes.length; i++) {
+            enlacesEntrantes[i] = new ArrayList<Integer>();
+        }
+
+        for (int web = 0; web < adjList.length; web++) {
+            for (int links = 0; links < adjList[web].size(); links++) {
+                enlacesEntrantes[adjList[web].get(links)].add(web);
+            }
+        }
+    }
     public void copiarHashMap(HashMap<String, Double> origen, HashMap<String, Double> destino)
     {
         for (String key : origen.keySet())                          //Para cada elemento del hashMap
@@ -213,8 +231,14 @@ public class Graph {
     private Double PrOneWeb(HashMap<String, Double> hm, int i, int numNodos)
     {
         // dumping factor
+        /*
         Double dFact = 0.85;                                        //Valor que indica el damping factor
         Double rdo = ((1 - dFact) / numNodos) + dFact * sumatorio(hm, i);
+         */
+        Double rdo;
+        Double d = 0.85;
+        Double sum = sumatorio(hm, i);
+        rdo = ((1 - d) / numNodos) + d * sum;
         /*
                                                       N
                           1 - dFact                 \---       [PR(i)] PrOneWeb(i)
@@ -227,7 +251,13 @@ public class Graph {
 
     private Double sumatorio(HashMap<String, Double> hm, int i)
     {
+        /*
+                            PageRank de iteracion anterior de web
+                rdo = rdo + --------------------------------------
+                            numero de enlaces salientes de esa web
+        */
 
+        /*
         Double rdo = 0.0;
         Double enlSalientes;
         if (enlacesEntrantes[i]!=null)                                      //Si tiene enlaces entrantes :
@@ -237,12 +267,16 @@ public class Graph {
                 int web = enlacesEntrantes[i].get(webI);
                 enlSalientes = Double.valueOf(adjList[web].size());
                 rdo = rdo + (hm.get(keys[web]) / enlSalientes);
-                /*
-                             PageRank de iteracion anterior de web
-                rdo = rdo + --------------------------------------
-                            numero de enlaces salientes de esa web
-                */
             }
+        }
+        return rdo;
+        */
+        Double rdo = 0.0;
+        Double enlSalientes;
+        for (int webI = 0; webI < enlacesEntrantes[i].size(); webI++) {
+            int web = enlacesEntrantes[i].get(webI);
+            enlSalientes = Double.valueOf(adjList[web].size());
+            rdo = rdo + (hm.get(keys[web]) / enlSalientes);
         }
         return rdo;
     }

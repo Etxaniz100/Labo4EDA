@@ -37,10 +37,10 @@ public class main {
         System.out.println(hs.get(1));
         System.out.println(hs.keySet());
         */
-        main.getMiMain().cargarListaIndex(path.toAbsolutePath().toString() + "\\listaPrueba");
+        main.getMiMain().cargarListaIndex(path.toAbsolutePath().toString() + "\\listaPeque");
         System.out.println("Tiempo para cargar las webs: " + (reloj.elapsedTime() - aux));
         aux = reloj.elapsedTime();
-        main.getMiMain().cargarListaRelaciones(path.toAbsolutePath().toString() + "\\enlacesPrueba");
+        main.getMiMain().cargarListaRelaciones(path.toAbsolutePath().toString() + "\\relacionesPeque");
         System.out.println("Tiempo para cargar las relaciones: " + (reloj.elapsedTime() - aux));
         aux = reloj.elapsedTime();
         Graph grafo = new Graph(ListaWebs.getMiListaWebs().getLista().size());
@@ -56,9 +56,6 @@ public class main {
         */
         grafo.llenarListaPalabras();
         System.out.println("Tiempo para llenar las palabras: " + (reloj.elapsedTime() - aux));
-        aux = reloj.elapsedTime();
-        grafo.pageRank();
-        System.out.println("Tiempo para calcular el pageRank: " + (reloj.elapsedTime() - aux));
         aux = reloj.elapsedTime();
         /*
         grafo.print();
@@ -80,11 +77,14 @@ public class main {
         System.out.println("Tiempo para los casos de prueba: " + reloj.elapsedTime());
          */
         // palabras que si estan
+
         ArrayList<Par> listPar = grafo.buscarPaginas("money","bitcoin");
+        System.out.println("Tiempo para buscar las paginas: " + (reloj.elapsedTime() - aux));
         for (int i =0; i<listPar.size(); i++)
         {
             System.out.println(listPar.get(i).getWeb() + " -> " + listPar.get(i).getPageRank());
         }
+        /*
         listPar = grafo.buscarPaginas("free","money");
         for (int i =0; i<listPar.size(); i++)
         {
@@ -92,6 +92,7 @@ public class main {
         }
         // palabras que no estan
         listPar = grafo.buscarPaginas("unapalabraquenoesta", "otrapalabratotalmentedistinta");
+         */
     }
 
     public static main getMiMain() {
