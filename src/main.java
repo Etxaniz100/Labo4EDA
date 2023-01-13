@@ -26,13 +26,12 @@ public class main {
         aux = reloj.elapsedTime();
         System.out.println("Tiempo inicial: " + aux);
 
-
         Path path = Paths.get("");
         main.getMiMain().cargarListaPalabras(path.toAbsolutePath().toString() + "\\words.txt");
-
         System.out.println("Tiempo para cargar las palabras: " + (reloj.elapsedTime() - aux));
         aux = reloj.elapsedTime();
         /*
+        // CASO DE PRUEBA PARA COMPROBAR QUE EL HASHMAP DE LAS PALABRAS ES CORRECTO
         HashMap<Integer, Character> hs = ListaPalabras.getMiListaPalabras().getHashMap();
         System.out.println(hs.get(1));
         System.out.println(hs.keySet());
@@ -48,6 +47,7 @@ public class main {
         System.out.println("Tiempo para crear el grafo: " + (reloj.elapsedTime() - aux));
         aux = reloj.elapsedTime();
         /*
+        // CASOS DE PRUEBA PARA web2words
         System.out.println("Caso de prueba web2Words");
         System.out.println(ListaWebs.getMiListaWebs().web2Words("devalt.org"));
         System.out.println(ListaWebs.getMiListaWebs().web2Words("campofrio.es"));
@@ -58,6 +58,7 @@ public class main {
         System.out.println("Tiempo para llenar las palabras: " + (reloj.elapsedTime() - aux));
         aux = reloj.elapsedTime();
         /*
+        // CASOS DE PRUEBA METODO ESTANCONECTADOS
         grafo.print();
         System.out.println("Tiempo para los casos de prueba: " + reloj.elapsedTime());
         System.out.println("Caso 1-> El mismo elemento");
@@ -75,12 +76,13 @@ public class main {
         System.out.println("Caso 3.2-> Ningun elemento esta en la lista");
         System.out.println(grafo.estanConectados2("webquenoestaenlalista1","webquenoestaenlalista2"));;
         System.out.println("Tiempo para los casos de prueba: " + reloj.elapsedTime());
-         */
+        */
         HashMap<String, Double> pageRank = grafo.pageRank();
         System.out.println("Tiempo para calcular el pagerank: " + (reloj.elapsedTime() - aux));
         aux = reloj.elapsedTime();
 
-        // palabras que si estan
+        // CASOS DE PRUEBA PARA EL METODO BUSCAR PAGINAS Y EL METODO PAGERANK SIMULTANEAMENTE
+        // 1- palabras que si estan
         ArrayList<Par> listPar = grafo.buscarPaginas("beach","the", pageRank);
         for (int i =0; i<listPar.size(); i++)
         {
@@ -88,6 +90,7 @@ public class main {
         }
         System.out.println("Tiempo para buscar las paginas: " + (reloj.elapsedTime() - aux));
 
+        // 1.1- palabras que si estan
         aux = reloj.elapsedTime();
         listPar = grafo.buscarPaginas("blue","money", pageRank);
         for (int i =0; i<listPar.size(); i++)
@@ -96,9 +99,28 @@ public class main {
         }
         System.out.println("Tiempo para buscar las paginas: " + (reloj.elapsedTime() - aux));
 
-        // palabras que no estan
+        // 1.2- una palabra consigo misma
+        aux = reloj.elapsedTime();
+        listPar = grafo.buscarPaginas("bitcoin","bitcoin", pageRank);
+        for (int i =0; i<listPar.size(); i++)
+        {
+            System.out.println("< " + listPar.get(i).getWeb() + ", " + listPar.get(i).getPageRank() + " >");
+        }
+        System.out.println("Tiempo para buscar las paginas: " + (reloj.elapsedTime() - aux));
+
+        // 2- palabras que no estan
         aux = reloj.elapsedTime();
         listPar = grafo.buscarPaginas("unapalabraquenoesta", "otrapalabratotalmentedistinta", pageRank);
+        System.out.println("Tiempo para buscar las paginas: " + (reloj.elapsedTime() - aux));
+
+        // 2.1- palabras que no estan
+        aux = reloj.elapsedTime();
+        listPar = grafo.buscarPaginas("otrapalabraquenoestadentro", "estapalabratampocoexiste", pageRank);
+        System.out.println("Tiempo para buscar las paginas: " + (reloj.elapsedTime() - aux));
+
+        // 2.1- una palabra que no existe consigo misma
+        aux = reloj.elapsedTime();
+        listPar = grafo.buscarPaginas("estapalabratampocoexiste", "estapalabratampocoexiste", pageRank);
         System.out.println("Tiempo para buscar las paginas: " + (reloj.elapsedTime() - aux));
     }
 
