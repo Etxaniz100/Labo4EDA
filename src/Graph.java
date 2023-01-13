@@ -186,6 +186,7 @@ public class Graph {
                 sumaAct = sumaAct + newPR;                          //Sumamos al valor total de los page rank de esta iteracion el nuevo valor
                 rdo.replace(dir, newPR);                            //Sustituimos en el hashMap resultado el nuevo PageRank
             }
+
             if (Math.abs(sumaAct - sumaAnt) < 0.0001)               //Si la diferencia entre las dos iteraciones anteriores es practicamente nula
             {
                 terminado = true;                                   //Se da por terminado el ciclo
