@@ -26,115 +26,102 @@ public class main {
         aux = reloj.elapsedTime();
         System.out.println("Tiempo inicial: " + aux);
 
-
-        /*
-         ------------------ Casos de prueba : ------------------
-
-        Lista con la que se trabaja estas pruebas :
-
-            0:freerobloxmoneynoscam4k.com
-            1:ilikemoney.es
-            2:bitcoinmoney.yes
-            3:freemoney.com
-            4:thisisfree.net
-            5:freeandbitcoin.es
-            6:moneyforever.as
-            7:freevbucksandmoney.er
-            8:moneymoneymoney.es
-            9:nomoney.no
-
-            0 ---> 5
-            1 ---> 2 ### 5
-            2 ---> 1 ### 3 ### 7
-            3 ---> 2 ### 4 ### 7 ### 8 ### 9
-            4 ---> 3
-            5 ---> 0 ### 1 ### 6
-            6 ---> 5
-            7 ---> 2 ### 3
-            8 ---> 3 ### 9
-            9 ---> 3 ### 8
-
-        (En el programa utilizamos un damping factor de 0.85)
-
-       Iteraciones : 0      /   1     /     2   ... /  40
-
-            PR(0)   0.1     0.04333     0.07945      0.05798
-            PR(1)   0.1     0.07167     0.11260      0.09308
-            PR(2)   0.1     0.11700     0.11459      0.12651
-            PR(3)   0.1     0.25583     0.16431      0.20036
-            PR(4)   0.1     0.03200     0.05849      0.04916
-            PR(5)   0.1     0.22750     0.11912      0.15984
-            PR(6)   0.1     0.04333     0.07945      0.05798
-            PR(7)   0.1     0.06033     0.09164      0.08426
-            PR(8)   0.1     0.07450     0.09015      0.08539
-            PR(9)   0.1     0.07450     0.09015      0.08539
-
-        Como la diferencia entre la suma de los page rank actual y anterior esperada es menor a 0.0001
-        para estabilizarse llega hasta la iteracion numero 40 (en este caso)
-        */
-
-        Path pathPrueba = Paths.get("");
-
-        main.getMiMain().cargarListaPalabras(pathPrueba.toAbsolutePath().toString() + "\\words.txt");
+        Path path = Paths.get("");
+        main.getMiMain().cargarListaPalabras(path.toAbsolutePath().toString() + "\\words.txt");
         System.out.println("Tiempo para cargar las palabras: " + (reloj.elapsedTime() - aux));
         aux = reloj.elapsedTime();
-
-        main.getMiMain().cargarListaIndex(pathPrueba.toAbsolutePath().toString() + "\\listaPrueba");
+        /*
+        // CASO DE PRUEBA PARA COMPROBAR QUE EL HASHMAP DE LAS PALABRAS ES CORRECTO
+        HashMap<Integer, Character> hs = ListaPalabras.getMiListaPalabras().getHashMap();
+        System.out.println(hs.get(1));
+        System.out.println(hs.keySet());
+        */
+        main.getMiMain().cargarListaIndex(path.toAbsolutePath().toString() + "\\listaPeque");
         System.out.println("Tiempo para cargar las webs: " + (reloj.elapsedTime() - aux));
         aux = reloj.elapsedTime();
-        main.getMiMain().cargarListaRelaciones(pathPrueba.toAbsolutePath().toString() + "\\enlacesPrueba");
+        main.getMiMain().cargarListaRelaciones(path.toAbsolutePath().toString() + "\\relacionesPeque");
         System.out.println("Tiempo para cargar las relaciones: " + (reloj.elapsedTime() - aux));
         aux = reloj.elapsedTime();
-
-        Graph grafoPrueba = new Graph(ListaWebs.getMiListaWebs().getLista().size());
-        grafoPrueba.crearGrafo(ListaWebs.getMiListaWebs());
+        Graph grafo = new Graph(ListaWebs.getMiListaWebs().getLista().size());
+        grafo.crearGrafo(ListaWebs.getMiListaWebs());
         System.out.println("Tiempo para crear el grafo: " + (reloj.elapsedTime() - aux));
         aux = reloj.elapsedTime();
-
-        grafoPrueba.llenarListaPalabras();
+        /*
+        // CASOS DE PRUEBA PARA web2words
+        System.out.println("Caso de prueba web2Words");
+        System.out.println(ListaWebs.getMiListaWebs().web2Words("devalt.org"));
+        System.out.println(ListaWebs.getMiListaWebs().web2Words("campofrio.es"));
+        System.out.println(ListaWebs.getMiListaWebs().web2Words("alphadatainternational.com"));
+        System.out.println(ListaWebs.getMiListaWebs().web2Words("business-english-dresden.de"));
+        */
+        grafo.llenarListaPalabras();
         System.out.println("Tiempo para llenar las palabras: " + (reloj.elapsedTime() - aux));
         aux = reloj.elapsedTime();
-
-        HashMap<String, Double> pageRankPrueba = grafoPrueba.pageRank();
+        /*
+        // CASOS DE PRUEBA METODO ESTANCONECTADOS
+        grafo.print();
+        System.out.println("Tiempo para los casos de prueba: " + reloj.elapsedTime());
+        System.out.println("Caso 1-> El mismo elemento");
+        System.out.println(grafo.estanConectados2(ListaWebs.getMiListaWebs().getLista().get(0).getNombre(),ListaWebs.getMiListaWebs().getLista().get(0).getNombre()).toString());
+        System.out.println("Caso 2-> Dos elementos directamente conectados");
+        System.out.println(grafo.estanConectados2(ListaWebs.getMiListaWebs().getLista().get(3).getNombre(),ListaWebs.getMiListaWebs().getLista().get(398861).getNombre()).toString());
+        System.out.println("Caso 2.1-> Dos elementos conectados mediante otro elemento de por medio");
+        System.out.println(grafo.estanConectados2(ListaWebs.getMiListaWebs().getLista().get(3).getNombre(),ListaWebs.getMiListaWebs().getLista().get(115696).getNombre()).toString());
+        System.out.println("Caso 2.2-> Dos elementos conectados mediante dos elementos de por medio");
+        System.out.println(grafo.estanConectados2(ListaWebs.getMiListaWebs().getLista().get(3).getNombre(),ListaWebs.getMiListaWebs().getLista().get(115515).getNombre()).toString());
+        System.out.println("Caso 3-> Dos elementos no estan conectados");
+        System.out.println(grafo.estanConectados2(ListaWebs.getMiListaWebs().getLista().get(845).getNombre(),ListaWebs.getMiListaWebs().getLista().get(92355).getNombre()).toString());
+        System.out.println("Caso 3.1-> Un elemento no esta en la lista");
+        System.out.println(grafo.estanConectados2(ListaWebs.getMiListaWebs().getLista().get(1224).getNombre(),"webquenoestaenlalista"));
+        System.out.println("Caso 3.2-> Ningun elemento esta en la lista");
+        System.out.println(grafo.estanConectados2("webquenoestaenlalista1","webquenoestaenlalista2"));;
+        System.out.println("Tiempo para los casos de prueba: " + reloj.elapsedTime());
+        */
+        HashMap<String, Double> pageRank = grafo.pageRank();
         System.out.println("Tiempo para calcular el pagerank: " + (reloj.elapsedTime() - aux));
         aux = reloj.elapsedTime();
 
-        ArrayList<Par> listParPrueba = grafoPrueba.buscarPaginas("free","money", pageRankPrueba);
-        System.out.println("Valores esperados para las webs : ");
-        System.out.println("");
-        System.out.println("        0:freerobloxmoneynoscam4k.com\n" +
-                "        1:ilikemoney.es\n" +
-                "        2:bitcoinmoney.yes\n" +
-                "        3:freemoney.com\n" +
-                "        4:thisisfree.net\n" +
-                "        5:freeandbitcoin.es\n" +
-                "        6:moneyforever.as\n" +
-                "        7:freevbucksandmoney.er\n" +
-                "        8:moneymoneymoney.es\n" +
-                "        9:nomoney.no");
-        System.out.println("");
-        System.out.println("       Iteraciones : 0      /   1     /     2   ... /  40\n" +
-                "\n" +
-                "            PR(0)   0.1     0.04333     0.07945      0.05798\n" +
-                "            PR(1)   0.1     0.07167     0.11260      0.09308\n" +
-                "            PR(2)   0.1     0.11700     0.11459      0.12651\n" +
-                "            PR(3)   0.1     0.25583     0.16431      0.20036\n" +
-                "            PR(4)   0.1     0.03200     0.05849      0.04916\n" +
-                "            PR(5)   0.1     0.22750     0.11912      0.15984\n" +
-                "            PR(6)   0.1     0.04333     0.07945      0.05798\n" +
-                "            PR(7)   0.1     0.06033     0.09164      0.08426\n" +
-                "            PR(8)   0.1     0.07450     0.09015      0.08539\n" +
-                "            PR(9)   0.1     0.07450     0.09015      0.08539 ");
-        System.out.println("");
-        System.out.println("Valores reales para las webs (buscadas con las palabras clave free y money): ");
-        for (int i =0; i<listParPrueba.size(); i++)
+        // CASOS DE PRUEBA PARA EL METODO BUSCAR PAGINAS Y EL METODO PAGERANK SIMULTANEAMENTE
+        // 1- palabras que si estan
+        ArrayList<Par> listPar = grafo.buscarPaginas("beach","the", pageRank);
+        for (int i =0; i<listPar.size(); i++)
         {
-            System.out.println("< " + listParPrueba.get(i).getWeb() + ", " + listParPrueba.get(i).getPageRank() + " >");
+            System.out.println("< " + listPar.get(i).getWeb() + ", " + listPar.get(i).getPageRank() + " >");
         }
         System.out.println("Tiempo para buscar las paginas: " + (reloj.elapsedTime() - aux));
+
+        // 1.1- palabras que si estan
         aux = reloj.elapsedTime();
+        listPar = grafo.buscarPaginas("blue","money", pageRank);
+        for (int i =0; i<listPar.size(); i++)
+        {
+            System.out.println("< " + listPar.get(i).getWeb() + ", " + listPar.get(i).getPageRank() + " >");
+        }
+        System.out.println("Tiempo para buscar las paginas: " + (reloj.elapsedTime() - aux));
 
+        // 1.2- una palabra consigo misma
+        aux = reloj.elapsedTime();
+        listPar = grafo.buscarPaginas("bitcoin","bitcoin", pageRank);
+        for (int i =0; i<listPar.size(); i++)
+        {
+            System.out.println("< " + listPar.get(i).getWeb() + ", " + listPar.get(i).getPageRank() + " >");
+        }
+        System.out.println("Tiempo para buscar las paginas: " + (reloj.elapsedTime() - aux));
 
+        // 2- palabras que no estan
+        aux = reloj.elapsedTime();
+        listPar = grafo.buscarPaginas("unapalabraquenoesta", "otrapalabratotalmentedistinta", pageRank);
+        System.out.println("Tiempo para buscar las paginas: " + (reloj.elapsedTime() - aux));
+
+        // 2.1- palabras que no estan
+        aux = reloj.elapsedTime();
+        listPar = grafo.buscarPaginas("otrapalabraquenoestadentro", "estapalabratampocoexiste", pageRank);
+        System.out.println("Tiempo para buscar las paginas: " + (reloj.elapsedTime() - aux));
+
+        // 2.1- una palabra que no existe consigo misma
+        aux = reloj.elapsedTime();
+        listPar = grafo.buscarPaginas("estapalabratampocoexiste", "estapalabratampocoexiste", pageRank);
+        System.out.println("Tiempo para buscar las paginas: " + (reloj.elapsedTime() - aux));
     }
 
     public static main getMiMain() {
